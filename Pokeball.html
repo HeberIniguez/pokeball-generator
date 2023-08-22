@@ -1,0 +1,63 @@
+<h1><center>Generador de Pokeballs by Heber_Iñiguez</center></h1><hr>
+<canvas width="1440" height="1080"> </canvas>
+
+<script>
+
+    var color = ["red", "blue", "yellow","PURPLE"];
+    var posicion = 0;
+    var pizarron = document.querySelector("canvas");
+    var pincel = pizarron.getContext("2d");
+    pincel.fillStyle = "grey";
+    pincel.fillRect(0,0,1440,1080);
+
+    //funcion para crear circulos.
+    function circulo(x, y, tam, number1, number2, color){
+        var pi = 3.1416;
+        pincel.beginPath();
+        pincel.fillStyle = color;
+        pincel.arc(x, y, tam, number1*pi, number2*pi);
+        pincel.fill();
+    }
+
+    //funcion para crear rectangulos
+    function rectangulo(x, y, w, h, color){
+        pincel.fillStyle = color;
+        pincel.beginPath();
+        pincel.fillRect(x, y, w, h);
+    }
+
+    function crearPokeball(evento){
+        var largo = evento.pageX - pizarron.offsetLeft;
+        var alto = evento.pageY - pizarron.offsetTop;
+
+        var tam = Math.round(Math.random()*200); //tamaño de pokeball aleatorio.
+        
+        //contorno pokeball
+        circulo(largo, alto, tam, 0, 2, "black");
+        circulo(largo, alto, (tam-5), 0, 2, "white");
+        circulo(largo, alto, (tam-5), 1, 2, color[posicion]);
+
+        //linea divisora.
+        rectangulo((largo-tam), alto, (tam*2), tam/20, "black");
+
+        //boton.
+        circulo(largo, alto, (tam/4), 0, 2, "black");
+        circulo(largo, alto, (tam/5), 0, 2, "white");
+        circulo(largo, alto, (tam/6), 0, 2, "black");
+        circulo(largo, alto, (tam/7), 0, 2, "white");
+
+    }
+
+    function cambiarColor(){
+        posicion++;
+        if(posicion>=color.length){
+            posicion = 0;
+        }
+
+        return false;
+    }
+
+    pizarron.onclick = crearPokeball;
+    pizarron.oncontextmenu = cambiarColor;
+
+</script>
